@@ -12,10 +12,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 /**
  * Created by indomegabyte on 03/03/16.
@@ -24,7 +28,7 @@ public class ResultActivity extends Activity implements AdapterView.OnItemClickL
    // TextView tv_artis;
     ListView list1;
     String x;
-
+    private Tracker mTracker;
     //JSONObject jo;
 ArtisAdapter mJSONAdapter;
 
@@ -33,7 +37,11 @@ ArtisAdapter mJSONAdapter;
         setContentView(R.layout.activity_result);
 
         list1= (ListView)findViewById(R.id.list1);
+
       //  tv_artis= (TextView)findViewById(R.id.tv_artis);
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         x = this.getIntent().getExtras().getString("nama_artis");
         Log.d("x", x);
@@ -49,6 +57,10 @@ ArtisAdapter mJSONAdapter;
         loadData(x);
 
     list1.setOnItemClickListener(this);
+        // Obtain the shared Tracker instance.
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        sendScreenImageName();
 
     }
 
@@ -97,5 +109,21 @@ ArtisAdapter mJSONAdapter;
         // start the next Activity using your prepared Intent
         startActivity(intent2);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendScreenImageName();
+
+    }
+
+    private void sendScreenImageName() {
+
+        // [START screen_view_hit]
+        Log.i("TAG", "Result Activity");
+        mTracker.setScreenName("Result Activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        // [END screen_view_hit]
     }
     }

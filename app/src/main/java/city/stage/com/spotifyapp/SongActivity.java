@@ -12,11 +12,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 
 /**
  * Created by indomegabyte on 07/03/16.
@@ -26,6 +31,7 @@ public class SongActivity extends Activity implements AdapterView.OnItemClickLis
     String y;
     SongAdapter mJSONAdapter;
     private SwipeRefreshLayout swipeContainer;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,10 @@ public class SongActivity extends Activity implements AdapterView.OnItemClickLis
 
         list4 = (ListView) findViewById(R.id.list4);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         y = this.getIntent().getExtras().getString("judul_lagu");
         Log.d("y", y);
@@ -52,12 +62,16 @@ public class SongActivity extends Activity implements AdapterView.OnItemClickLis
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-              //  Toast.makeText(SongActivity.this,"Refresh", Toast.LENGTH_LONG).show();
-               loadLagu(y);
+                //  Toast.makeText(SongActivity.this,"Refresh", Toast.LENGTH_LONG).show();
+                loadLagu(y);
 
 
             }
         });
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        sendScreenImageName();
+
 
     }
 
@@ -99,5 +113,19 @@ public class SongActivity extends Activity implements AdapterView.OnItemClickLis
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
         intent.setDataAndType(myUri, "audio/*");
         startActivity(intent);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendScreenImageName();
+
+    }
+    private void sendScreenImageName() {
+
+        // [START screen_view_hit]
+        Log.i("TAG", "Song Activity");
+        mTracker.setScreenName("Song Activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        // [END screen_view_hit]
     }
 }

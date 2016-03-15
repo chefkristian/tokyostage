@@ -104,6 +104,7 @@ public class AlbumAdapter extends BaseAdapter {
         mJsonObject= json;
         mJsonArray = json.optJSONArray("items");
 
+
         //harus ada!!
         notifyDataSetChanged();
     }

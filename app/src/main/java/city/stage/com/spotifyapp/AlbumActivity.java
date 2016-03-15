@@ -11,12 +11,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 
 /**
  * Created by indomegabyte on 03/03/16.
@@ -26,6 +31,7 @@ public class AlbumActivity extends Activity implements AdapterView.OnItemClickLi
     String z;
     AlbumAdapter mJSONAdapter;
     private SwipeRefreshLayout swipeContainer;
+    private Tracker mTracker;
 
 
 
@@ -35,6 +41,9 @@ public class AlbumActivity extends Activity implements AdapterView.OnItemClickLi
         setContentView(R.layout.activity_album);
         list2 = (ListView)findViewById(R.id.list2);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 
         z = this.getIntent().getExtras().getString("json");
@@ -83,6 +92,10 @@ public class AlbumActivity extends Activity implements AdapterView.OnItemClickLi
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        sendScreenImageName();
 
     }
 
@@ -137,5 +150,19 @@ public class AlbumActivity extends Activity implements AdapterView.OnItemClickLi
 
         // start the next Activity using your prepared Intent
         startActivity(intent3);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendScreenImageName();
+
+    }
+    private void sendScreenImageName() {
+
+        // [START screen_view_hit]
+        Log.i("TAG", "Album Activity");
+        mTracker.setScreenName("Album Activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        // [END screen_view_hit]
     }
 }

@@ -1,10 +1,12 @@
 package city.stage.com.spotifyapp;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,11 +18,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
-
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -30,6 +35,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     // String ArtistName = "Artist";
     // String TrackName = "TrackTitle";
     TextView track,artis;
+    private Tracker mTracker;
 
 
     @Override
@@ -43,6 +49,10 @@ track = (TextView)findViewById(R.id.track);
         artis = (TextView)findViewById(R.id.artis);
         //  button2 = (Button)findViewById(R.id.button2);
         switchButton = (Switch) findViewById(R.id.switchButton);
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         button1.setOnClickListener(this);
         // button2.setOnClickListener(this);
@@ -96,6 +106,10 @@ track = (TextView)findViewById(R.id.track);
                 }
             }
         });
+        // Obtain the shared Tracker instance.
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        sendScreenImageName();
     }
 
 
@@ -164,5 +178,36 @@ track = (TextView)findViewById(R.id.track);
 //        }
         }
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendScreenImageName();
+    }
+
+    private void sendScreenImageName() {
+
+        // [START screen_view_hit]
+        Log.i("TAG", "Main Activity");
+        mTracker.setScreenName("Main Activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        // [END screen_view_hit]
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        MainActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }
+

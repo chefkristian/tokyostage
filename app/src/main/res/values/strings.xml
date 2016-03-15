@@ -1,6 +1,10 @@
 <resources>
-    <string name="app_name">SpotifyApp</string>
+    <string name="app_name">TokyoStage</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5361419276031867/2445525839</string>
+    <string name="iklan_track_detail">ca-app-pub-5361419276031867/9829191833</string>
+    <string name="iklan_album">ca-app-pub-5361419276031867/3643057430</string>
 </resources>
+

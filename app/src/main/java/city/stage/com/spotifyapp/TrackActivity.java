@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -19,6 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 /**
  * Created by indomegabyte on 04/03/16.
@@ -29,12 +33,17 @@ public class TrackActivity extends Activity implements AdapterView.OnItemClickLi
 TrackAdapter mJSONAdapter;
     JSONObject activeJSONObj;
     private SwipeRefreshLayout swipeContainer;
+    private Tracker mTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
         list3 = (ListView) findViewById(R.id.list3);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         q = this.getIntent().getExtras().getString("json");
         Log.d("q", q);
@@ -84,6 +93,9 @@ TrackAdapter mJSONAdapter;
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        sendScreenImageName();
 
     }
 
@@ -133,5 +145,19 @@ TrackAdapter mJSONAdapter;
             startActivity(intent);
 
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendScreenImageName();
+
+    }
+    private void sendScreenImageName() {
+
+        // [START screen_view_hit]
+        Log.i("TAG", "Track Activity");
+        mTracker.setScreenName("Track Activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        // [END screen_view_hit]
     }
 }
