@@ -40,6 +40,7 @@ public class AlbumActivity extends Activity implements AdapterView.OnItemClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
         list2 = (ListView)findViewById(R.id.list2);
+        list2.setDivider(null);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
