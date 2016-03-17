@@ -1,6 +1,7 @@
 package city.stage.com.spotifyapp;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     // String TrackName = "TrackTitle";
     TextView track,artis;
     private Tracker mTracker;
+
+
 
 
     @Override
@@ -123,6 +127,8 @@ track = (TextView)findViewById(R.id.track);
 //
 //// finally change the color
 //        window.setStatusBarColor(Color.parseColor("#FCE4EC"));
+
+
     }
 
 
