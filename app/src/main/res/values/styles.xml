@@ -2,9 +2,10 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+         Customize your theme here.
         <item name="colorPrimaryDark">#E91E63</item>
         <item name="colorPrimary">#E91E63</item>
+
     </style>
     <style name="MyCustomTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/MyActionBarTheme</item>

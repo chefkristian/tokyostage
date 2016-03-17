@@ -39,6 +39,7 @@ public class SongActivity extends Activity implements AdapterView.OnItemClickLis
         setContentView(R.layout.activity_song);
 
         list4 = (ListView) findViewById(R.id.list4);
+        list4.setDivider(null);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
         AdView mAdView = (AdView) findViewById(R.id.adView);

@@ -64,12 +64,13 @@ public class SongAdapter extends BaseAdapter {
 
         String nama_Artis = "";
 
+
         //json structure
         JSONArray arr_artis = jsonObject.optJSONArray("artists");
         for(int x = 0; x < arr_artis.length(); x++){
             try {
                 JSONObject artist_object = arr_artis.getJSONObject(x);
-                nama_Artis = nama_Artis + " " +artist_object.optString("name");
+                nama_Artis = nama_Artis + "" +artist_object.optString("name");
 
             } catch (JSONException e) {
                 e.printStackTrace();
