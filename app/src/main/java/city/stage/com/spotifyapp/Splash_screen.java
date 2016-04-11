@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -30,6 +32,7 @@ public class Splash_screen extends Activity {
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     private boolean isReceiverRegistered;
+    private Tracker mTracker;
 
     /** Duration of wait **/
     private final int SPLASH_DISPLAY_LENGTH = 2000;
@@ -51,6 +54,7 @@ public class Splash_screen extends Activity {
                 Splash_screen.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -72,6 +76,11 @@ public class Splash_screen extends Activity {
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
         }
+
+        // Obtain the shared Tracker instance.
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        sendScreenImageName();
     }
     private void registerReceiver(){
         if(!isReceiverRegistered) {
@@ -95,6 +104,22 @@ public class Splash_screen extends Activity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendScreenImageName();
+
+    }
+
+    private void sendScreenImageName() {
+
+        // [START screen_view_hit]
+        Log.i("TAG", "Splash Activity");
+        mTracker.setScreenName("Splash Activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        // [END screen_view_hit]
     }
 }
 

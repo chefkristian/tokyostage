@@ -61,7 +61,7 @@ track = (TextView)findViewById(R.id.track);
         mAdView.loadAd(adRequest);
 
         button1.setOnClickListener(this);
-        // button2.setOnClickListener(this);
+
 
 //        switchButton.setChecked(true);
 //        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -99,6 +99,7 @@ track = (TextView)findViewById(R.id.track);
 //        });
         track.setTextColor(Color.parseColor("#C62828"));
         artis.setTextColor(Color.parseColor("#9E9E9E"));
+
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
